@@ -1,0 +1,17 @@
+@import "../../assets//styles//font.scss";
+@import "../../assets/styles/color.scss";
+
+.Header {
+  display: flex;
+  justify-content: space-between;
+  padding: 35px 40px;
+  margin: 0 20px;
+
+  &__title {
+    font-family: "Diphylleia", serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
