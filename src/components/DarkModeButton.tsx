@@ -77,7 +77,7 @@ export default function CustomizedSwitches() {
         <MaterialUISwitch
           checked={darkMode}
           onChange={handleThemeChange}
-          sx={{ m: 1 }}
+          sx={{ m: 0 }}
         />
       }
       label=""
