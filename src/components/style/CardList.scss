@@ -1,0 +1,25 @@
+.home {
+  &__title {
+    font-size: 3.5rem;
+  }
+
+  &__image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+    margin-top: 130px;
+
+    img {
+      width: 15%;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+
+      transition: transform 0.3s ease-in-out;
+    }
+
+    img:hover {
+      transform: translateY(-25px);
+    }
+  }
+}
