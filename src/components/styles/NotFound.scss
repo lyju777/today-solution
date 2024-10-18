@@ -1,0 +1,47 @@
+.NotFound {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 55vh;
+
+  h1 {
+    margin-bottom: 0px;
+    font-size: 8.25rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .NotFound {
+    height: 45vh;
+
+    h1 {
+      font-size: 8rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .NotFound {
+    height: 30vh;
+
+    h1 {
+      font-size: 7rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+    }
+  }
+}

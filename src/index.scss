@@ -5,14 +5,14 @@ body {
   margin-top: 130px;
 }
 
-@media (max-width: 1024px) {
+@media all and (min-width: 768px) and (max-width: 1024px) {
   html,
   body {
     margin-top: 100px;
   }
 }
 
-@media (max-width: 430px) {
+@media all and (max-width: 767px) {
   html,
   body {
     margin-top: 200px;

@@ -1,0 +1,45 @@
+@import "../../assets/styles/font.scss";
+
+.SolutionItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 55vh;
+
+  h3 {
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 1.4rem;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .SolutionItem {
+    height: 50vh;
+
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .SolutionItem {
+    height: 30vh;
+
+    h3 {
+      font-size: 1.25rem;
+    }
+  }
+}

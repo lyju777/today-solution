@@ -1,5 +1,5 @@
-@import "../../assets//styles//font.scss";
-@import "../../assets/styles/color.scss";
+@import "../../../assets/styles/font.scss";
+@import "../../../assets/styles/color.scss";
 
 .Header {
   position: fixed;
@@ -20,7 +20,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media all and (min-width: 768px) and (max-width: 1024px) {
   .Header {
     padding: 35px 30px;
 
@@ -30,7 +30,7 @@
   }
 }
 
-@media (max-width: 430px) {
+@media all and (max-width: 767px) {
   .Header {
     padding: 35px 10px;
 

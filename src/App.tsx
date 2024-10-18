@@ -3,9 +3,9 @@ import "./App.css";
 import { useState, useEffect, createContext } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "./util/theme";
-import Header from "./components/Header";
+import Header from "./components/common/Header";
 
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
 import NotFound from "./pages/NotFound";
@@ -28,6 +28,11 @@ const App = () => {
     sessionStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
+  const location = useLocation();
+
+  const showHeader: boolean =
+    location.pathname === "/" || location.pathname === "/solution";
+
   // 1. "/" 메인 홈페이지
   // 2. "/solution" 솔루션 페이지
   return (
@@ -35,7 +40,7 @@ const App = () => {
       <context.Provider value={{ darkMode, setDarkMode }}>
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
           <CssBaseline />
-          <Header />
+          {showHeader && <Header />}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/solution" element={<Solution />} />

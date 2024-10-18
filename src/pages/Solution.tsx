@@ -1,5 +1,11 @@
-const solution = () => {
-  return <div>solution</div>;
+import SolutionItem from "../components/SolutionItem";
+
+const Solution = () => {
+  return (
+    <div>
+      <SolutionItem />
+    </div>
+  );
 };
 
-export default solution;
+export default Solution;
