@@ -1,11 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import useLoading from "../hooks/useLoading";
+import loadingDark from "../assets/loading-dark.gif";
+import loadingWhite from "../assets/loading-white.gif";
 import sun from "../assets/sun.png";
 import moon from "../assets/moon.png";
 import star from "../assets/star.png";
 import "./styles/CardList.scss";
 
 const CardList = () => {
-  const nav = useNavigate();
+  const [isLoading, getSolution, darkMode] = useLoading() as [
+    boolean,
+    (location: string) => void,
+    string
+  ];
 
   interface Image {
     src: string;
@@ -18,24 +24,31 @@ const CardList = () => {
     { src: star, alt: "star" },
   ];
 
-  const getSolution = (): void => {
-    nav("/solution");
-  };
+  const loading = darkMode ? loadingWhite : loadingDark;
+
+  if (isLoading) {
+    return (
+      <div className="Loading">
+        <img src={loading} alt="loading" />
+        <p>솔루션을 찾는중입니다...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="home">
-      <div className="home__image">
+    <div className="CardList">
+      <div className="CardList__image">
         {images.map((image, index) => (
           <img
-            onClick={getSolution}
+            onClick={() => getSolution("/solution")}
             key={index}
             src={image.src}
             alt={image.alt}
           />
         ))}
       </div>
-      <h4 className="home__title">
-        질문을 생각하면서 원하는 카드를 선택해주세요.
+      <h4 className="CardList__title">
+        고민 또는 질문을 생각하면서 카드를 선택해주세요.
       </h4>
     </div>
   );
