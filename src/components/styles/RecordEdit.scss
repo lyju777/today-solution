@@ -1,0 +1,73 @@
+@import "../../assets/styles/font.scss";
+
+.Record {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  h3,
+  h4 {
+    font-family: "Nanum Myeongjo", serif;
+    font-size: $font-size-100;
+  }
+
+  &__area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 10px 20px 20px 20px;
+
+    &__button {
+      display: flex;
+      gap: 10px;
+      width: 30vw;
+    }
+  }
+
+  .custom-textfield,
+  .custom-button {
+    width: 30vw;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .Record {
+    h3,
+    h4 {
+      font-size: $font-size-200;
+    }
+
+    &__area {
+      &__button {
+        width: 50vw;
+      }
+    }
+
+    .custom-textfield,
+    .custom-button {
+      width: 50vw;
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .Record {
+    h3,
+    h4 {
+      font-size: $font-size-300;
+    }
+
+    &__area {
+      &__button {
+        width: 90vw;
+      }
+    }
+
+    .custom-textfield,
+    .custom-button {
+      width: 90vw;
+    }
+  }
+}

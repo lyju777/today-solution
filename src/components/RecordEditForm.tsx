@@ -1,23 +1,40 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
 import { getStringedDate } from "../util/get-stringed-date";
-import "./styles/Record.scss";
 import { InitRecord } from "../types/types";
 
-const RecordForm = () => {
+import "./styles/RecordEdit.scss";
+
+interface RecordEditFormProps {
+  initData: InitRecord;
+}
+
+const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
   const context = useContext(RecordDispatchContext);
+
   if (!context) {
-    throw new Error("RecordDispatchContext is undefined");
+    throw new Error("'cannot find RecordDispatchContext");
   }
-  const { onCreate } = context;
+
+  const { onUpdate, onDelete } = context;
 
   const [input, setInput] = useState<InitRecord>({
+    id: "",
     recordDate: new Date(),
     recordContent: "",
   });
+
+  useEffect(() => {
+    if (initData) {
+      setInput({
+        ...initData,
+        recordDate: new Date(initData.recordDate),
+      });
+    }
+  }, [initData]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.name;
@@ -34,8 +51,20 @@ const RecordForm = () => {
   };
 
   const onSubmit = (input: InitRecord) => {
-    onCreate(input.recordDate, input.recordContent);
-    nav("/recordlist", { replace: true });
+    if (window.confirm("수정하시겠습니까?")) {
+      if (!input.id) {
+        return;
+      }
+      onUpdate(input.id, input.recordDate, input.recordContent);
+      nav("/", { replace: true });
+    }
+  };
+
+  const onClickDelete = (id: string) => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      onDelete(id);
+      nav("/", { replace: true });
+    }
   };
 
   const nav = useNavigate();
@@ -62,19 +91,30 @@ const RecordForm = () => {
           rows={4}
           onChange={onChangeInput}
         />
-        <Button
-          className="custom-button"
-          onClick={() => onSubmit(input)}
-          variant="outlined"
-          color="inherit"
-          startIcon={<CreateIcon />}
-          disabled={!input.recordContent || isNaN(input.recordDate.getTime())}
-        >
-          저장하기
-        </Button>
+        <div className="Record__area__button">
+          <Button
+            className="custom-button"
+            onClick={() => onSubmit(input)}
+            variant="outlined"
+            color="inherit"
+            startIcon={<CreateIcon />}
+            disabled={!input.recordContent || isNaN(input.recordDate.getTime())}
+          >
+            수정하기
+          </Button>
+          <Button
+            className="custom-button"
+            onClick={() => initData.id && onClickDelete(initData.id)}
+            variant="outlined"
+            color="inherit"
+            startIcon={<CreateIcon />}
+          >
+            삭제하기
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default RecordForm;
+export default RecordEditForm;

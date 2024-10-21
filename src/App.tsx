@@ -3,6 +3,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "./util/theme";
 import { Route, Routes } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { InitRecord } from "./types/types";
 
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
@@ -11,47 +12,54 @@ import Record from "./pages/Record";
 import Edit from "./pages/Edit";
 import RecordList from "./pages/RecordList";
 
-interface ThemeContextType {
+type Action =
+  | { type: "INIT"; data: InitRecord[] }
+  | { type: "CREATE"; data: InitRecord }
+  | { type: "UPDATE"; data: InitRecord }
+  | { type: "DELETE"; id: string };
+
+type ThemeContextType = {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
-interface RecordStateContextType {
-  data: object[];
-}
+type RecordStateContextType = InitRecord;
 
-interface RecordDispatchContextType {
-  onCreate: (recordDate: Date | string, recordContent: string) => void;
-}
-
-interface State {
-  id: string;
-  recordDate: Date | string;
-  recordContent: string;
-}
-
-type Action = { type: "INIT"; data: State[] } | { type: "CREATE"; data: State };
+type RecordDispatchContextType = {
+  onCreate: (recordDate: Date, recordContent: string) => void;
+  onUpdate: (id: string, recordDate: Date, recordContent: string) => void;
+  onDelete: (id: string) => void;
+};
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
 );
 export const RecordStateContext = createContext<
-  RecordStateContextType | undefined
+  RecordStateContextType[] | undefined
 >(undefined);
 
 export const RecordDispatchContext = createContext<
   RecordDispatchContextType | undefined
 >(undefined);
 
-const reducer = (state: State[], action: Action) => {
+const reducer = (state: InitRecord[], action: Action) => {
   let nextState;
   switch (action.type) {
     case "INIT": {
       return action.data;
     }
-
     case "CREATE": {
       nextState = [action.data, ...state];
+      break;
+    }
+    case "UPDATE": {
+      nextState = state.map((item) =>
+        String(item.id) === String(action.data.id) ? action.data : item
+      );
+      break;
+    }
+    case "DELETE": {
+      nextState = state.filter((item) => String(item.id) !== String(action.id));
       break;
     }
     default:
@@ -85,11 +93,21 @@ const App = () => {
   //-------------------------- reducer 함수 정의 --------------------------
 
   // 기록하기
-  const onCreate = (recordDate: Date | string, recordContent: string) => {
+  const onCreate = (recordDate: Date, recordContent: string) => {
     dispatch({
       type: "CREATE",
       data: { id: uuid, recordDate, recordContent },
     });
+  };
+
+  // 기록수정
+  const onUpdate = (id: string, recordDate: Date, recordContent: string) => {
+    dispatch({ type: "UPDATE", data: { id, recordDate, recordContent } });
+  };
+
+  // 기록삭제
+  const onDelete = (id: string) => {
+    dispatch({ type: "DELETE", id });
   };
 
   // 1. "/" 메인 홈페이지
@@ -101,8 +119,10 @@ const App = () => {
     <>
       <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-          <RecordStateContext.Provider value={{ data }}>
-            <RecordDispatchContext.Provider value={{ onCreate }}>
+          <RecordStateContext.Provider value={data}>
+            <RecordDispatchContext.Provider
+              value={{ onCreate, onUpdate, onDelete }}
+            >
               <CssBaseline />
               <Routes>
                 <Route path="/" element={<Home />} />
