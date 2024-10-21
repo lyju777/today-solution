@@ -2,7 +2,7 @@ import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { useContext } from "react";
-import { context } from "../../App";
+import { ThemeContext } from "../../App";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -65,7 +65,7 @@ export default function CustomizedSwitches() {
     setDarkMode(!darkMode);
   };
 
-  const themeContext = useContext(context);
+  const themeContext = useContext(ThemeContext);
   if (!themeContext) {
     return null;
   }

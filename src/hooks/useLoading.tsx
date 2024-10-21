@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { context } from "../App";
+import { ThemeContext } from "../App";
 
 const useLoading = () => {
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
-  const themeContext = useContext(context);
+  const themeContext = useContext(ThemeContext);
   const darkMode = themeContext?.darkMode;
 
   const getSolution = (location: string): void => {
