@@ -7,6 +7,7 @@ import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
 
 import "./styles/RecordEdit.scss";
+import { SpeakerNotesOff } from "@mui/icons-material";
 
 interface RecordEditFormProps {
   initData: InitRecord;
@@ -23,6 +24,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
 
   const [input, setInput] = useState<InitRecord>({
     id: "",
+    recordTitle: "",
     recordDate: new Date(),
     recordContent: "",
   });
@@ -51,20 +53,33 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
   };
 
   const onSubmit = (input: InitRecord) => {
-    if (window.confirm("수정하시겠습니까?")) {
+    if (window.confirm("기록을 수정하시겠습니까?")) {
       if (!input.id) {
         return;
       }
-      onUpdate(input.id, input.recordDate, input.recordContent);
-      nav("/", { replace: true });
+      onUpdate(
+        input.id,
+        input.recordDate,
+        input.recordContent,
+        input.recordTitle
+      );
+      nav("/recordlist", { replace: true });
     }
   };
 
   const onClickDelete = (id: string) => {
-    if (window.confirm("삭제하시겠습니까?")) {
+    if (window.confirm("기록을 삭제하시겠습니까?")) {
       onDelete(id);
-      nav("/", { replace: true });
+      nav("/recordlist", { replace: true });
     }
+  };
+
+  const saveDisabled = () => {
+    return (
+      !input.recordContent ||
+      isNaN(input.recordDate.getTime()) ||
+      !input.recordTitle
+    );
   };
 
   const nav = useNavigate();
@@ -79,6 +94,15 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
           size="small"
           id="date"
           type="date"
+          onChange={onChangeInput}
+        />
+        <TextField
+          value={input.recordTitle}
+          name="recordTitle"
+          className="custom-textfield"
+          size="small"
+          label="제목을 입력하세요."
+          slotProps={{ htmlInput: { maxLength: 50 } }}
           onChange={onChangeInput}
         />
         <TextField
@@ -98,7 +122,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
             variant="outlined"
             color="inherit"
             startIcon={<CreateIcon />}
-            disabled={!input.recordContent || isNaN(input.recordDate.getTime())}
+            disabled={saveDisabled()}
           >
             수정하기
           </Button>
@@ -107,7 +131,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
             onClick={() => initData.id && onClickDelete(initData.id)}
             variant="outlined"
             color="inherit"
-            startIcon={<CreateIcon />}
+            startIcon={<SpeakerNotesOff />}
           >
             삭제하기
           </Button>

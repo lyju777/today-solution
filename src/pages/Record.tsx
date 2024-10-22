@@ -5,7 +5,7 @@ const Record = () => {
   return (
     <div>
       <Header />
-      <RecordForm />;
+      <RecordForm />
     </div>
   );
 };

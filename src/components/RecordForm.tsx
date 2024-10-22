@@ -2,9 +2,9 @@ import { useState, useContext } from "react";
 import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
-import CreateIcon from "@mui/icons-material/Create";
 import { getStringedDate } from "../util/get-stringed-date";
-import "./styles/Record.scss";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import "./styles/RecordForm.scss";
 import { InitRecord } from "../types/types";
 
 const RecordForm = () => {
@@ -15,6 +15,7 @@ const RecordForm = () => {
   const { onCreate } = context;
 
   const [input, setInput] = useState<InitRecord>({
+    recordTitle: "",
     recordDate: new Date(),
     recordContent: "",
   });
@@ -34,13 +35,21 @@ const RecordForm = () => {
   };
 
   const onSubmit = (input: InitRecord) => {
-    onCreate(input.recordDate, input.recordContent);
+    onCreate(input.recordDate, input.recordContent, input.recordTitle);
     nav("/recordlist", { replace: true });
+  };
+
+  const saveDisabled = () => {
+    return (
+      !input.recordContent ||
+      isNaN(input.recordDate.getTime()) ||
+      !input.recordTitle
+    );
   };
 
   const nav = useNavigate();
   return (
-    <div className="Record">
+    <div className="RecordForm">
       <h3>오늘의 생각을 기록해보세요.</h3>
       <div className="Record__area">
         <TextField
@@ -50,6 +59,15 @@ const RecordForm = () => {
           size="small"
           id="date"
           type="date"
+          onChange={onChangeInput}
+        />
+        <TextField
+          value={input.recordTitle}
+          name="recordTitle"
+          className="custom-textfield"
+          size="small"
+          label="제목을 입력하세요."
+          slotProps={{ htmlInput: { maxLength: 50 } }}
           onChange={onChangeInput}
         />
         <TextField
@@ -67,8 +85,8 @@ const RecordForm = () => {
           onClick={() => onSubmit(input)}
           variant="outlined"
           color="inherit"
-          startIcon={<CreateIcon />}
-          disabled={!input.recordContent || isNaN(input.recordDate.getTime())}
+          startIcon={<SaveAsIcon />}
+          disabled={saveDisabled()}
         >
           저장하기
         </Button>

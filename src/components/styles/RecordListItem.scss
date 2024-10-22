@@ -1,0 +1,32 @@
+.RecordListItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 110px);
+
+  &__textfield {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  &__container {
+    height: 60vh;
+
+    &__ListItemText {
+      cursor: pointer;
+
+      .recordContent {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}

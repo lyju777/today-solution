@@ -73,6 +73,7 @@ export default function CustomizedSwitches() {
 
   return (
     <FormControlLabel
+      sx={{ m: 0 }}
       control={
         <MaterialUISwitch
           checked={darkMode}

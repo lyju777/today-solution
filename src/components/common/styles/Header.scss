@@ -1,14 +1,24 @@
 @import "../../../assets/styles/font.scss";
 
 .Header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 35px 40px;
   margin: 0 20px;
+  z-index: 999;
+
+  &.light {
+    background-color: #ffffff;
+  }
+
+  &.dark {
+    background-color: #121212;
+  }
 
   &__title {
     font-family: "Diphylleia", serif;
@@ -16,6 +26,12 @@
     font-style: normal;
     font-size: 1.5rem;
     cursor: pointer;
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    gap: 60px;
   }
 }
 
@@ -26,6 +42,11 @@
     &__title {
       font-size: 1.3rem;
     }
+
+    &__menu {
+      display: flex;
+      gap: 45px;
+    }
   }
 }
 
@@ -35,6 +56,11 @@
 
     &__title {
       font-size: 1.2rem;
+    }
+
+    &__menu {
+      display: flex;
+      gap: 30px;
     }
   }
 }

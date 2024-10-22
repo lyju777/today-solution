@@ -26,8 +26,17 @@ type ThemeContextType = {
 type RecordStateContextType = InitRecord;
 
 type RecordDispatchContextType = {
-  onCreate: (recordDate: Date, recordContent: string) => void;
-  onUpdate: (id: string, recordDate: Date, recordContent: string) => void;
+  onCreate: (
+    recordDate: Date,
+    recordContent: string,
+    recordTitle: string
+  ) => void;
+  onUpdate: (
+    id: string,
+    recordDate: Date,
+    recordContent: string,
+    recordTitle: string
+  ) => void;
   onDelete: (id: string) => void;
 };
 
@@ -93,16 +102,28 @@ const App = () => {
   //-------------------------- reducer 함수 정의 --------------------------
 
   // 기록하기
-  const onCreate = (recordDate: Date, recordContent: string) => {
+  const onCreate = (
+    recordDate: Date,
+    recordContent: string,
+    recordTitle: string
+  ) => {
     dispatch({
       type: "CREATE",
-      data: { id: uuid, recordDate, recordContent },
+      data: { id: uuid, recordDate, recordContent, recordTitle },
     });
   };
 
   // 기록수정
-  const onUpdate = (id: string, recordDate: Date, recordContent: string) => {
-    dispatch({ type: "UPDATE", data: { id, recordDate, recordContent } });
+  const onUpdate = (
+    id: string,
+    recordDate: Date,
+    recordContent: string,
+    recordTitle: string
+  ) => {
+    dispatch({
+      type: "UPDATE",
+      data: { id, recordDate, recordContent, recordTitle },
+    });
   };
 
   // 기록삭제
