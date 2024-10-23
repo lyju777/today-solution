@@ -3,11 +3,11 @@ import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
+import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
 
-import "./styles/RecordEdit.scss";
-import { SpeakerNotesOff } from "@mui/icons-material";
+import "./styles/Record.scss";
 
 interface RecordEditFormProps {
   initData: InitRecord;
@@ -63,7 +63,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         input.recordContent,
         input.recordTitle
       );
-      nav("/recordlist", { replace: true });
+      nav(`/detail/${initData.id}`, { replace: true });
     }
   };
 
@@ -90,7 +90,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         <TextField
           value={getStringedDate(input.recordDate)}
           name="recordDate"
-          className="custom-textfield"
+          className="custom-component"
           size="small"
           id="date"
           type="date"
@@ -99,7 +99,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         <TextField
           value={input.recordTitle}
           name="recordTitle"
-          className="custom-textfield"
+          className="custom-component"
           size="small"
           label="제목을 입력하세요."
           slotProps={{ htmlInput: { maxLength: 50 } }}
@@ -108,14 +108,23 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         <TextField
           value={input.recordContent}
           name="recordContent"
-          className="custom-textfield"
+          className="custom-component"
           id="outlined-multiline-static"
           label="기록할 내용을 입력하세요."
           multiline
-          rows={4}
+          rows={7}
           onChange={onChangeInput}
         />
         <div className="Record__area__button">
+          <Button
+            className="custom-button"
+            onClick={() => initData.id && onClickDelete(initData.id)}
+            variant="outlined"
+            color="inherit"
+            startIcon={<CommentsDisabledIcon />}
+          >
+            삭제하기
+          </Button>
           <Button
             className="custom-button"
             onClick={() => onSubmit(input)}
@@ -125,15 +134,6 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
             disabled={saveDisabled()}
           >
             수정하기
-          </Button>
-          <Button
-            className="custom-button"
-            onClick={() => initData.id && onClickDelete(initData.id)}
-            variant="outlined"
-            color="inherit"
-            startIcon={<SpeakerNotesOff />}
-          >
-            삭제하기
           </Button>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import useLoading from "../hooks/useLoading";
 import loadingDark from "../assets/loading-dark.gif";
 import loadingWhite from "../assets/loading-white.gif";
 import sun from "../assets/sun.png";
@@ -6,24 +5,27 @@ import moon from "../assets/moon.png";
 import star from "../assets/star.png";
 import "./styles/CardList.scss";
 
-const CardList = () => {
-  const [isLoading, getSolution, darkMode] = useLoading() as [
-    boolean,
-    (location: string) => void,
-    string
-  ];
+interface CardListProps {
+  isLoading: boolean;
+  getSolution: (location: string) => void;
+  darkMode: string;
+}
 
-  interface Image {
-    src: string;
-    alt: string;
-  }
+interface Image {
+  src: string;
+  alt: string;
+}
 
-  const images: Image[] = [
-    { src: sun, alt: "sun" },
-    { src: moon, alt: "moon" },
-    { src: star, alt: "star" },
-  ];
-
+const images: Image[] = [
+  { src: sun, alt: "sun" },
+  { src: moon, alt: "moon" },
+  { src: star, alt: "star" },
+];
+const CardList: React.FC<CardListProps> = ({
+  isLoading,
+  getSolution,
+  darkMode,
+}) => {
   const loading = darkMode ? loadingWhite : loadingDark;
 
   if (isLoading) {

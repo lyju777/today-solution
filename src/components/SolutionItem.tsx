@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Solution, getRandomSolution } from "../util/solution";
 import { useNavigate } from "react-router-dom";
 import "./styles/SolutionItem.scss";
@@ -11,8 +11,17 @@ const SolutionItem = () => {
   const [randomSolutions, setRandomSolutions] = useState<Solution>();
 
   useLayoutEffect(() => {
-    setRandomSolutions(getRandomSolution());
-    sessionStorage.setItem("randomSolutions", JSON.stringify(randomSolutions));
+    const solution = getRandomSolution();
+    setRandomSolutions(solution);
+  }, []);
+
+  useEffect(() => {
+    if (randomSolutions) {
+      sessionStorage.setItem(
+        "randomSolutions",
+        JSON.stringify(randomSolutions)
+      );
+    }
   }, [randomSolutions]);
 
   return (

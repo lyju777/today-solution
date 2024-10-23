@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { getStringedDate } from "../util/get-stringed-date";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
-import "./styles/RecordForm.scss";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import "./styles/Record.scss";
 import { InitRecord } from "../types/types";
 
 const RecordForm = () => {
+  const nav = useNavigate();
   const context = useContext(RecordDispatchContext);
   if (!context) {
     throw new Error("RecordDispatchContext is undefined");
@@ -47,15 +49,14 @@ const RecordForm = () => {
     );
   };
 
-  const nav = useNavigate();
   return (
-    <div className="RecordForm">
+    <div className="Record">
       <h3>오늘의 생각을 기록해보세요.</h3>
       <div className="Record__area">
         <TextField
           value={getStringedDate(input.recordDate)}
           name="recordDate"
-          className="custom-textfield"
+          className="custom-component"
           size="small"
           id="date"
           type="date"
@@ -64,7 +65,7 @@ const RecordForm = () => {
         <TextField
           value={input.recordTitle}
           name="recordTitle"
-          className="custom-textfield"
+          className="custom-component"
           size="small"
           label="제목을 입력하세요."
           slotProps={{ htmlInput: { maxLength: 50 } }}
@@ -73,23 +74,35 @@ const RecordForm = () => {
         <TextField
           value={input.recordContent}
           name="recordContent"
-          className="custom-textfield"
+          className="custom-component"
           id="outlined-multiline-static"
           label="기록할 내용을 입력하세요."
           multiline
-          rows={4}
+          rows={7}
           onChange={onChangeInput}
         />
-        <Button
-          className="custom-button"
-          onClick={() => onSubmit(input)}
-          variant="outlined"
-          color="inherit"
-          startIcon={<SaveAsIcon />}
-          disabled={saveDisabled()}
-        >
-          저장하기
-        </Button>
+        <div className="Record__area__button">
+          <Button
+            className="custom-button"
+            onClick={() => nav("/")}
+            variant="outlined"
+            color="inherit"
+            startIcon={<KeyboardBackspaceIcon />}
+          >
+            돌아가기
+          </Button>
+
+          <Button
+            className="custom-button"
+            onClick={() => onSubmit(input)}
+            variant="outlined"
+            color="inherit"
+            startIcon={<SaveAsIcon />}
+            disabled={saveDisabled()}
+          >
+            저장하기
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,13 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "./util/theme";
 import { Route, Routes } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { InitRecord } from "./types/types";
+import {
+  InitRecord,
+  Action,
+  ThemeContextType,
+  RecordStateContextType,
+  RecordDispatchContextType,
+} from "./types/types";
 
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
@@ -11,34 +17,7 @@ import NotFound from "./pages/NotFound";
 import Record from "./pages/Record";
 import Edit from "./pages/Edit";
 import RecordList from "./pages/RecordList";
-
-type Action =
-  | { type: "INIT"; data: InitRecord[] }
-  | { type: "CREATE"; data: InitRecord }
-  | { type: "UPDATE"; data: InitRecord }
-  | { type: "DELETE"; id: string };
-
-type ThemeContextType = {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-type RecordStateContextType = InitRecord;
-
-type RecordDispatchContextType = {
-  onCreate: (
-    recordDate: Date,
-    recordContent: string,
-    recordTitle: string
-  ) => void;
-  onUpdate: (
-    id: string,
-    recordDate: Date,
-    recordContent: string,
-    recordTitle: string
-  ) => void;
-  onDelete: (id: string) => void;
-};
+import Detail from "./pages/Detail";
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
@@ -136,6 +115,7 @@ const App = () => {
   // 3. "/record" 기록하기 페이지
   // 4. "/edit/:id" 기록 수정 페이지
   // 5. "/recordlist" 기록 리스트 페이지
+  // 6. "/detail/:id 기록 상세 페이지
   return (
     <>
       <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
@@ -152,6 +132,7 @@ const App = () => {
                 <Route path="/record" element={<Record />} />
                 <Route path="edit/:id" element={<Edit />} />
                 <Route path="/recordlist" element={<RecordList />} />
+                <Route path="/detail/:id" element={<Detail />} />
               </Routes>
             </RecordDispatchContext.Provider>
           </RecordStateContext.Provider>

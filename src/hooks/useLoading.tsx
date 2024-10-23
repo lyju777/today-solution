@@ -12,7 +12,7 @@ const useLoading = () => {
     setIsLoading(true);
     setTimeout(() => {
       nav(location);
-    }, 6000);
+    }, 4000);
   };
 
   return [isLoading, getSolution, darkMode];
