@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
@@ -20,7 +20,18 @@ const RecordForm = () => {
     recordTitle: "",
     recordDate: new Date(),
     recordContent: "",
+    todaySolution: "",
   });
+
+  useEffect(() => {
+    const getSolution = sessionStorage.getItem("randomSolutions");
+    if (getSolution) {
+      setInput((input) => ({
+        ...input,
+        todaySolution: JSON.parse(getSolution).solution,
+      }));
+    }
+  }, []);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.name;
@@ -37,7 +48,12 @@ const RecordForm = () => {
   };
 
   const onSubmit = (input: InitRecord) => {
-    onCreate(input.recordDate, input.recordContent, input.recordTitle);
+    onCreate(
+      input.recordDate,
+      input.recordContent,
+      input.recordTitle,
+      input.todaySolution || ""
+    );
     nav("/recordlist", { replace: true });
   };
 
@@ -78,7 +94,7 @@ const RecordForm = () => {
           id="outlined-multiline-static"
           label="기록할 내용을 입력하세요."
           multiline
-          rows={7}
+          rows={6}
           onChange={onChangeInput}
         />
         <div className="Record__area__button">

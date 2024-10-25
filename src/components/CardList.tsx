@@ -49,9 +49,7 @@ const CardList: React.FC<CardListProps> = ({
           />
         ))}
       </div>
-      <h4 className="CardList__title">
-        고민 또는 질문을 생각하면서 카드를 선택해주세요.
-      </h4>
+      <h4>고민 또는 질문을 생각하면서 카드를 선택해주세요.</h4>
     </div>
   );
 };

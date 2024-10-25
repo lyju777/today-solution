@@ -3,7 +3,7 @@ import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, CardContent, Typography } from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";
-import CommentsDisabled from "@mui/icons-material/Create";
+import CreateIcon from "@mui/icons-material/Create";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
@@ -58,8 +58,18 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ initData }) => {
           </Typography>
           <Typography className="recordContent" variant="body1">
             {input.recordContent}
-            {/* <br /> */}
           </Typography>
+          <br />
+          {initData?.todaySolution && (
+            <Typography
+              className="recordContent"
+              variant="body2"
+              component="div"
+            >
+              {`# 오늘의 솔루션 "${initData?.todaySolution}"`}
+            </Typography>
+          )}
+
           <div className="RecordDetail__area__button">
             <Button
               className="custom-button"
@@ -76,7 +86,7 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ initData }) => {
               onClick={() => nav(`/edit/${initData.id}`)}
               variant="outlined"
               color="inherit"
-              startIcon={<CommentsDisabled />}
+              startIcon={<CreateIcon />}
               disabled={saveDisabled()}
             >
               기록수정

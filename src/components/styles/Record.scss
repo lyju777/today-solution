@@ -5,7 +5,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 110px);
+  padding-top: 105px;
+  height: 100vh;
 
   h3,
   h4 {
@@ -22,13 +23,13 @@
     &__button {
       display: flex;
       gap: 10px;
-      width: 30vw;
+      width: 40vw;
     }
   }
 
   .custom-component,
   .custom-button {
-    width: 30vw;
+    width: 40vw;
   }
 }
 

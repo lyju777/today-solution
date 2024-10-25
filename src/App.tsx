@@ -84,11 +84,12 @@ const App = () => {
   const onCreate = (
     recordDate: Date,
     recordContent: string,
-    recordTitle: string
+    recordTitle: string,
+    todaySolution: string
   ) => {
     dispatch({
       type: "CREATE",
-      data: { id: uuid, recordDate, recordContent, recordTitle },
+      data: { id: uuid, recordDate, recordContent, recordTitle, todaySolution },
     });
   };
 
@@ -97,11 +98,12 @@ const App = () => {
     id: string,
     recordDate: Date,
     recordContent: string,
-    recordTitle: string
+    recordTitle: string,
+    todaySolution: string
   ) => {
     dispatch({
       type: "UPDATE",
-      data: { id, recordDate, recordContent, recordTitle },
+      data: { id, recordDate, recordContent, recordTitle, todaySolution },
     });
   };
 

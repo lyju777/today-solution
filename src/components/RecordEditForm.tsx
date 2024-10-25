@@ -61,7 +61,8 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         input.id,
         input.recordDate,
         input.recordContent,
-        input.recordTitle
+        input.recordTitle,
+        initData.todaySolution || ""
       );
       nav(`/detail/${initData.id}`, { replace: true });
     }
@@ -112,7 +113,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
           id="outlined-multiline-static"
           label="기록할 내용을 입력하세요."
           multiline
-          rows={7}
+          rows={6}
           onChange={onChangeInput}
         />
         <div className="Record__area__button">

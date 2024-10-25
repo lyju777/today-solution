@@ -1,7 +1,7 @@
 @import "../../../assets/styles/font.scss";
 
 .Header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -13,11 +13,11 @@
   z-index: 999;
 
   &.light {
-    background-color: #ffffff;
+    background-color: #ffffff (0);
   }
 
   &.dark {
-    background-color: #121212;
+    background-color: #121212(0);
   }
 
   &.visible {

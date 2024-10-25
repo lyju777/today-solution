@@ -3,6 +3,7 @@ export interface InitRecord {
   recordTitle: string;
   recordDate: Date;
   recordContent: string;
+  todaySolution?: string;
 }
 
 export type Action =
@@ -22,13 +23,15 @@ export type RecordDispatchContextType = {
   onCreate: (
     recordDate: Date,
     recordContent: string,
-    recordTitle: string
+    recordTitle: string,
+    todaySolution: string
   ) => void;
   onUpdate: (
     id: string,
     recordDate: Date,
     recordContent: string,
-    recordTitle: string
+    recordTitle: string,
+    todaySolution: string
   ) => void;
   onDelete: (id: string) => void;
 };
