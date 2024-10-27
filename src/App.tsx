@@ -1,11 +1,11 @@
 import { useState, useEffect, createContext, useReducer } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import { DialogsProvider } from "@toolpad/core/useDialogs";
 import { lightTheme, darkTheme } from "./util/theme";
 import { Route, Routes } from "react-router-dom";
+import { reducer } from "./reducer/recordReducer";
 import { v4 as uuidv4 } from "uuid";
 import {
-  InitRecord,
-  Action,
   ThemeContextType,
   RecordStateContextType,
   RecordDispatchContextType,
@@ -18,6 +18,10 @@ import Record from "./pages/Record";
 import Edit from "./pages/Edit";
 import RecordList from "./pages/RecordList";
 import Detail from "./pages/Detail";
+import Login from "./pages/Login";
+import Redirection from "./pages/Redirection";
+import LoggedInRoute from "./components/common/LoggedInRoute";
+import NotLoggedInRoute from "./components/common/NotLoggedInRoute";
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
   undefined
@@ -29,33 +33,6 @@ export const RecordStateContext = createContext<
 export const RecordDispatchContext = createContext<
   RecordDispatchContextType | undefined
 >(undefined);
-
-const reducer = (state: InitRecord[], action: Action) => {
-  let nextState;
-  switch (action.type) {
-    case "INIT": {
-      return action.data;
-    }
-    case "CREATE": {
-      nextState = [action.data, ...state];
-      break;
-    }
-    case "UPDATE": {
-      nextState = state.map((item) =>
-        String(item.id) === String(action.data.id) ? action.data : item
-      );
-      break;
-    }
-    case "DELETE": {
-      nextState = state.filter((item) => String(item.id) !== String(action.id));
-      break;
-    }
-    default:
-      return state;
-  }
-  localStorage.setItem("record", JSON.stringify(nextState));
-  return nextState;
-};
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(() => {
@@ -118,26 +95,36 @@ const App = () => {
   // 4. "/edit/:id" 기록 수정 페이지
   // 5. "/recordlist" 기록 리스트 페이지
   // 6. "/detail/:id 기록 상세 페이지
+  // 7. "/login" 로그인 페이지
+  // 8. "/kakao/callback" 카카오 로그인 콜백 페이지
   return (
     <>
       <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-          <RecordStateContext.Provider value={data}>
-            <RecordDispatchContext.Provider
-              value={{ onCreate, onUpdate, onDelete }}
-            >
-              <CssBaseline />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/solution" element={<Solution />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/record" element={<Record />} />
-                <Route path="edit/:id" element={<Edit />} />
-                <Route path="/recordlist" element={<RecordList />} />
-                <Route path="/detail/:id" element={<Detail />} />
-              </Routes>
-            </RecordDispatchContext.Provider>
-          </RecordStateContext.Provider>
+          <DialogsProvider>
+            <RecordStateContext.Provider value={data}>
+              <RecordDispatchContext.Provider
+                value={{ onCreate, onUpdate, onDelete }}
+              >
+                <CssBaseline />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/solution" element={<Solution />} />
+                  <Route path="*" element={<NotFound />} />
+                  <Route element={<LoggedInRoute />}>
+                    <Route path="/record" element={<Record />} />
+                    <Route path="/edit/:id" element={<Edit />} />
+                    <Route path="/recordlist" element={<RecordList />} />
+                    <Route path="/detail/:id" element={<Detail />} />
+                  </Route>
+                  <Route element={<NotLoggedInRoute />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/kakao/callback" element={<Redirection />} />
+                  </Route>
+                </Routes>
+              </RecordDispatchContext.Provider>
+            </RecordStateContext.Provider>
+          </DialogsProvider>
         </ThemeProvider>
       </ThemeContext.Provider>
     </>

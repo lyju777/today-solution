@@ -7,6 +7,7 @@ import ActionButton from "../components/common/ActionButton";
 
 const Edit = () => {
   const params = useParams();
+
   const CurrentRecordItem: InitRecord | undefined = useRecord(params.id || "");
 
   return (

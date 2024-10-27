@@ -1,0 +1,36 @@
+.Login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .loginButton {
+    background-image: url(/src/assets/kakao_login_medium_wide.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    width: 300px;
+    height: 45px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border: none;
+  }
+
+  .returnButton {
+    color: rgb(117, 117, 117);
+    text-decoration: underline;
+  }
+
+  h1,
+  h2 {
+    font-family: "Diphylleia", serif;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+}
+
+@media all and (max-width: 767px) {
+}

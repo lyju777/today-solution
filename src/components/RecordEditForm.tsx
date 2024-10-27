@@ -3,6 +3,7 @@ import { RecordDispatchContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
+import { useDialogs } from "@toolpad/core/useDialogs";
 import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
@@ -15,6 +16,8 @@ interface RecordEditFormProps {
 
 const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
   const context = useContext(RecordDispatchContext);
+
+  const dialogs = useDialogs();
 
   if (!context) {
     throw new Error("'cannot find RecordDispatchContext");
@@ -52,8 +55,14 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
     });
   };
 
-  const onSubmit = (input: InitRecord) => {
-    if (window.confirm("기록을 수정하시겠습니까?")) {
+  const onSubmit = async (input: InitRecord) => {
+    const confirmed = await dialogs.confirm("기록을 수정하시겠습니까?", {
+      title: "수정하기",
+      okText: "확인",
+      cancelText: "취소",
+    });
+
+    if (confirmed) {
       if (!input.id) {
         return;
       }
@@ -68,8 +77,13 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
     }
   };
 
-  const onClickDelete = (id: string) => {
-    if (window.confirm("기록을 삭제하시겠습니까?")) {
+  const onClickDelete = async (id: string) => {
+    const confirmed = await dialogs.confirm("기록을 삭제하시겠습니까?", {
+      title: "삭제하기",
+      okText: "확인",
+      cancelText: "취소",
+    });
+    if (confirmed) {
       onDelete(id);
       nav("/recordlist", { replace: true });
     }

@@ -7,8 +7,9 @@ const Home = () => {
   const [isLoading, getSolution, darkMode] = useLoading() as [
     boolean,
     (location: string) => void,
-    string
+    string,
   ];
+
   return (
     <div>
       <Header isLoading={isLoading} />
@@ -17,6 +18,7 @@ const Home = () => {
         getSolution={getSolution}
         darkMode={darkMode}
       />
+
       <ActionButton isLoading={isLoading} />
     </div>
   );
