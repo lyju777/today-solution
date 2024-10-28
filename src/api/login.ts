@@ -9,3 +9,9 @@ export function getLoginUserData(url: string, token: string) {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export function getLogout(url: string, token: string) {
+  return axios.post(`/api/${url}`, null, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

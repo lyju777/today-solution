@@ -11,6 +11,8 @@ import {
   RecordDispatchContextType,
 } from "./types/types";
 
+import { UserProvider } from "./context/userContext";
+
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
 import NotFound from "./pages/NotFound";
@@ -102,28 +104,30 @@ const App = () => {
       <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
           <DialogsProvider>
-            <RecordStateContext.Provider value={data}>
-              <RecordDispatchContext.Provider
-                value={{ onCreate, onUpdate, onDelete }}
-              >
-                <CssBaseline />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/solution" element={<Solution />} />
-                  <Route path="*" element={<NotFound />} />
-                  <Route element={<LoggedInRoute />}>
-                    <Route path="/record" element={<Record />} />
-                    <Route path="/edit/:id" element={<Edit />} />
-                    <Route path="/recordlist" element={<RecordList />} />
-                    <Route path="/detail/:id" element={<Detail />} />
-                  </Route>
-                  <Route element={<NotLoggedInRoute />}>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/kakao/callback" element={<Redirection />} />
-                  </Route>
-                </Routes>
-              </RecordDispatchContext.Provider>
-            </RecordStateContext.Provider>
+            <UserProvider>
+              <RecordStateContext.Provider value={data}>
+                <RecordDispatchContext.Provider
+                  value={{ onCreate, onUpdate, onDelete }}
+                >
+                  <CssBaseline />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/solution" element={<Solution />} />
+                    <Route path="*" element={<NotFound />} />
+                    <Route element={<LoggedInRoute />}>
+                      <Route path="/record" element={<Record />} />
+                      <Route path="/edit/:id" element={<Edit />} />
+                      <Route path="/recordlist" element={<RecordList />} />
+                      <Route path="/detail/:id" element={<Detail />} />
+                    </Route>
+                    <Route element={<NotLoggedInRoute />}>
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/kakao/callback" element={<Redirection />} />
+                    </Route>
+                  </Routes>
+                </RecordDispatchContext.Provider>
+              </RecordStateContext.Provider>
+            </UserProvider>
           </DialogsProvider>
         </ThemeProvider>
       </ThemeContext.Provider>

@@ -1,7 +1,9 @@
 import "./styles/Header.scss";
 import { useNavigate } from "react-router-dom";
 import DarkModeButton from "./DarkModeButton";
-import { isLoggedIn, userData } from "../../util/loginCheck";
+import { isLoggedIn } from "../../util/loginCheck";
+import { getLogout } from "../../api/login";
+import Cookies from "js-cookie";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useDialogs } from "@toolpad/core/useDialogs";
 import { ThemeContext } from "../../App";
@@ -15,6 +17,7 @@ import {
 } from "react";
 import { throttle } from "lodash";
 import { Avatar, IconButton } from "@mui/material";
+import { UserContext } from "../../context/userContext";
 
 interface Props {
   isLoading?: boolean;
@@ -22,6 +25,8 @@ interface Props {
 
 const Header = ({ isLoading }: Props) => {
   const themeContext = useContext(ThemeContext);
+  const userContext = useContext(UserContext);
+  const userData = userContext ? userContext.userData : null;
   const nav = useNavigate();
 
   const dialogs = useDialogs();
@@ -67,8 +72,13 @@ const Header = ({ isLoading }: Props) => {
     });
 
     if (confirmed) {
-      // 로그아웃 로직
-      alert("로그아웃 되었습니다.");
+      const token = Cookies.get("access_token");
+      if (!token) return;
+      getLogout("logout", token).then(() => {
+        Cookies.remove("access_token");
+        localStorage.removeItem("userData");
+        nav("/");
+      });
     }
   };
 
@@ -87,12 +97,11 @@ const Header = ({ isLoading }: Props) => {
             <Avatar
               onClick={handleLogout}
               alt="Remy Sharp"
-              src={userData.thumbnailImage}
+              src={userData?.thumbnailImage}
             />
-            <IconButton>
+            <IconButton onClick={() => handleNavigation("/recordlist")}>
               <FormatListBulletedIcon
                 sx={{ fontSize: 33 }}
-                onClick={() => handleNavigation("/recordlist")}
               ></FormatListBulletedIcon>
             </IconButton>
           </>

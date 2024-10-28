@@ -6,6 +6,12 @@ export interface InitRecord {
   todaySolution?: string;
 }
 
+export interface UserData {
+  nickName: string;
+  profileImage: string;
+  thumbnailImage: string;
+}
+
 export type Action =
   | { type: "INIT"; data: InitRecord[] }
   | { type: "CREATE"; data: InitRecord }

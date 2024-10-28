@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { getLoginToken, getLoginUserData } from "../api/login";
+import { UserContext } from "../context/userContext";
 
 const Redirection = () => {
   const nav = useNavigate();
+  const userContext = useContext(UserContext);
+
   useEffect(() => {
     async function loginProcessing() {
       try {
@@ -17,6 +20,10 @@ const Redirection = () => {
         if (!token) return;
         await getLoginUserData("user", token).then((resonse) => {
           localStorage.setItem("userData", JSON.stringify(resonse.data));
+          if (userContext) {
+            const { setUserData } = userContext;
+            setUserData(resonse.data);
+          }
         });
       } catch (error) {
         console.error(error);
@@ -26,7 +33,7 @@ const Redirection = () => {
     setTimeout(() => {
       nav("/");
     }, 100);
-  }, [nav]);
+  }, [nav, userContext]);
 
   return <></>;
 };
