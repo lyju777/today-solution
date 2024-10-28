@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { RecordDispatchContext } from "../App";
+import { RecordDispatchContext } from "../context/recordContext";
 import { useNavigate } from "react-router-dom";
 import { Button, CardContent, Typography } from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";

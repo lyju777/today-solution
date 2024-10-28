@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { RecordStateContext } from "../App";
+import { RecordStateContext } from "../context/recordContext";
 import { InitRecord } from "../types/types";
 
 const useRecord = (id: string) => {

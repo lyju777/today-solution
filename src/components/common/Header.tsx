@@ -6,7 +6,7 @@ import { getLogout } from "../../api/login";
 import Cookies from "js-cookie";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useDialogs } from "@toolpad/core/useDialogs";
-import { ThemeContext } from "../../App";
+import { ThemeContext } from "../../context/ThemeContext";
 import {
   useCallback,
   useContext,

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { RecordDispatchContext } from "../App";
+import { RecordDispatchContext } from "../context/recordContext";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import { getStringedDate } from "../util/get-stringed-date";
