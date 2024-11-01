@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { RecordStateContext } from "../context/recordContext";
 import { getStringedDate } from "../util/get-stringed-date";
+import { getRecordList } from "../api/record";
+import { InitRecord } from "../types/types";
 import "./styles/RecordListItem.scss";
 
 import List from "@mui/material/List";
@@ -16,24 +17,37 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const RecordListItem = () => {
   const nav = useNavigate();
-  const data = useContext(RecordStateContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("latest");
+  const [data, setData] = useState([]);
 
-  const sortedData = [...(data || [])].sort((a, b) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getRecordList("record/list");
+        setData(response.data.recordList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const sortedData = [...(data || [])].sort((a: InitRecord, b: InitRecord) => {
     if (sortOrder === "latest") {
       return (
-        new Date(b.recordDate).getTime() - new Date(a.recordDate).getTime()
+        new Date(b.recordedDate).getTime() - new Date(a.recordedDate).getTime()
       );
     } else {
       return (
-        new Date(a.recordDate).getTime() - new Date(b.recordDate).getTime()
+        new Date(a.recordedDate).getTime() - new Date(b.recordedDate).getTime()
       );
     }
   });
 
   const filteredData = sortedData.filter(
-    (item) =>
+    (item: InitRecord) =>
       item.recordContent.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.recordTitle.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -89,8 +103,8 @@ const RecordListItem = () => {
           bgcolor: "background.paper",
         }}
       >
-        {filteredData?.map((item) => (
-          <div key={item.id}>
+        {filteredData?.map((item: InitRecord) => (
+          <div key={item.recordId}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <NotesIcon />
@@ -98,7 +112,7 @@ const RecordListItem = () => {
               <ListItemText
                 className="RecordListItem__container__ListItemText"
                 primary={item.recordTitle}
-                onClick={() => nav(`/detail/${item.id}`)}
+                onClick={() => nav(`/detail/${item.recordId}`)}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -106,7 +120,7 @@ const RecordListItem = () => {
                       variant="body2"
                       sx={{ color: "text.primary", display: "inline" }}
                     >
-                      {getStringedDate(new Date(item.recordDate))}
+                      {getStringedDate(new Date(item.recordedDate))}
                     </Typography>
                     <Typography
                       className="recordContent"

@@ -1,7 +1,7 @@
 export interface InitRecord {
-  id?: string;
+  recordId?: string;
   recordTitle: string;
-  recordDate: Date;
+  recordedDate: string | Date;
   recordContent: string;
   todaySolution?: string;
 }
@@ -27,14 +27,14 @@ export type RecordStateContextType = InitRecord;
 
 export type RecordDispatchContextType = {
   onCreate: (
-    recordDate: Date,
+    recordedDate: string,
     recordContent: string,
     recordTitle: string,
     todaySolution: string
   ) => void;
   onUpdate: (
     id: string,
-    recordDate: Date,
+    recordedDate: Date,
     recordContent: string,
     recordTitle: string,
     todaySolution: string

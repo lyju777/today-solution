@@ -13,17 +13,16 @@ const Redirection = () => {
       try {
         const code = new URL(window.location.href).searchParams.get("code");
         if (!code) return;
-        await getLoginToken("login", code).then((response) => {
-          Cookies.set("access_token", response.data.accessToken);
-          localStorage.setItem(
-            "userData",
-            JSON.stringify(response.data.userWrapper)
-          );
-          if (userContext) {
-            const { setUserData } = userContext;
-            setUserData(response.data.userWrapper);
-          }
-        });
+        const response = await getLoginToken("login", code);
+        Cookies.set("access_token", response.data.accessToken);
+        localStorage.setItem(
+          "userData",
+          JSON.stringify(response.data.userWrapper)
+        );
+        if (userContext) {
+          const { setUserData } = userContext;
+          setUserData(response.data.userWrapper);
+        }
       } catch (error) {
         console.error(error);
       }

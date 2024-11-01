@@ -1,5 +1,4 @@
-import { useState, useContext, useEffect } from "react";
-import { RecordDispatchContext } from "../context/recordContext";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
@@ -7,45 +6,48 @@ import { useDialogs } from "@toolpad/core/useDialogs";
 import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
+import { getRecordDetail, editRecord, deleteRecord } from "../api/record";
+import { formatNewDate } from "../util/get-stringed-date";
 
 import "./styles/Record.scss";
 
 interface RecordEditFormProps {
-  initData: InitRecord;
+  recordId: string;
 }
 
-const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
-  const context = useContext(RecordDispatchContext);
-
+const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
   const dialogs = useDialogs();
 
-  if (!context) {
-    throw new Error("'cannot find RecordDispatchContext");
-  }
-
-  const { onUpdate, onDelete } = context;
-
   const [input, setInput] = useState<InitRecord>({
-    id: "",
+    recordId: "",
     recordTitle: "",
-    recordDate: new Date(),
+    recordedDate: new Date(),
     recordContent: "",
+    todaySolution: "",
   });
 
   useEffect(() => {
-    if (initData) {
-      setInput({
-        ...initData,
-        recordDate: new Date(initData.recordDate),
-      });
-    }
-  }, [initData]);
+    const fetchData = async () => {
+      try {
+        const response = await getRecordDetail("record", recordId);
+        if (response) {
+          setInput({
+            ...response.data,
+            recordedDate: new Date(response.data.recordedDate),
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [recordId]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.name;
     let value: Date | string = e.target.value;
 
-    if (name === "recordDate") {
+    if (name === "recordedDate") {
       value = new Date(value);
     }
 
@@ -56,43 +58,53 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
   };
 
   const onSubmit = async (input: InitRecord) => {
-    const confirmed = await dialogs.confirm("기록을 수정하시겠습니까?", {
-      title: "수정하기",
-      okText: "확인",
-      cancelText: "취소",
-    });
+    try {
+      const confirmed = await dialogs.confirm("기록을 수정하시겠습니까?", {
+        title: "수정하기",
+        okText: "확인",
+        cancelText: "취소",
+      });
 
-    if (confirmed) {
-      if (!input.id) {
-        return;
+      if (confirmed) {
+        if (!input.recordId) {
+          return;
+        }
+        const params = Object.assign({}, input);
+        params.recordedDate = formatNewDate(input.recordedDate);
+        delete params.todaySolution;
+
+        await editRecord("record", params);
+        nav(`/detail/${recordId}`, { replace: true });
       }
-      onUpdate(
-        input.id,
-        input.recordDate,
-        input.recordContent,
-        input.recordTitle,
-        initData.todaySolution || ""
-      );
-      nav(`/detail/${initData.id}`, { replace: true });
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const onClickDelete = async (id: string) => {
-    const confirmed = await dialogs.confirm("기록을 삭제하시겠습니까?", {
-      title: "삭제하기",
-      okText: "확인",
-      cancelText: "취소",
-    });
-    if (confirmed) {
-      onDelete(id);
-      nav("/recordlist", { replace: true });
+  const onClickDelete = async (recordId: string) => {
+    try {
+      const confirmed = await dialogs.confirm("기록을 삭제하시겠습니까?", {
+        title: "삭제하기",
+        okText: "확인",
+        cancelText: "취소",
+      });
+      if (confirmed) {
+        if (!recordId) {
+          return;
+        }
+        await deleteRecord("record", recordId);
+        nav("/recordlist", { replace: true });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const saveDisabled = () => {
     return (
       !input.recordContent ||
-      isNaN(input.recordDate.getTime()) ||
+      typeof input.recordedDate === "string" ||
+      isNaN(input.recordedDate.getTime()) ||
       !input.recordTitle
     );
   };
@@ -103,8 +115,12 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
       <h3>오늘의 생각을 기록해보세요.</h3>
       <div className="Record__area">
         <TextField
-          value={getStringedDate(input.recordDate)}
-          name="recordDate"
+          value={
+            typeof input.recordedDate === "string"
+              ? input.recordedDate
+              : getStringedDate(input.recordedDate)
+          }
+          name="recordedDate"
           className="custom-component"
           size="small"
           id="date"
@@ -133,7 +149,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ initData }) => {
         <div className="Record__area__button">
           <Button
             className="custom-button"
-            onClick={() => initData.id && onClickDelete(initData.id)}
+            onClick={() => recordId && onClickDelete(recordId)}
             variant="outlined"
             color="inherit"
             startIcon={<CommentsDisabledIcon />}

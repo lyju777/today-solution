@@ -1,24 +1,19 @@
-import { useState, useContext, useEffect } from "react";
-import { RecordDispatchContext } from "../context/recordContext";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
-import { getStringedDate } from "../util/get-stringed-date";
+import { getStringedDate, formatNewDate } from "../util/get-stringed-date";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import "./styles/Record.scss";
 import { InitRecord } from "../types/types";
+import { createRecord } from "../api/record";
 
 const RecordForm = () => {
   const nav = useNavigate();
-  const context = useContext(RecordDispatchContext);
-  if (!context) {
-    throw new Error("RecordDispatchContext is undefined");
-  }
-  const { onCreate } = context;
 
   const [input, setInput] = useState<InitRecord>({
     recordTitle: "",
-    recordDate: new Date(),
+    recordedDate: new Date(),
     recordContent: "",
     todaySolution: "",
   });
@@ -37,7 +32,7 @@ const RecordForm = () => {
     const name: string = e.target.name;
     let value: Date | string = e.target.value;
 
-    if (name === "recordDate") {
+    if (name === "recordedDate") {
       value = new Date(value);
     }
 
@@ -47,20 +42,28 @@ const RecordForm = () => {
     });
   };
 
-  const onSubmit = (input: InitRecord) => {
-    onCreate(
-      input.recordDate,
-      input.recordContent,
-      input.recordTitle,
-      input.todaySolution || ""
-    );
-    nav("/recordlist", { replace: true });
+  const onSubmit = async (input: InitRecord) => {
+    const recordedDate = formatNewDate(input.recordedDate);
+
+    const params = {
+      recordedDate: recordedDate,
+      recordContent: input.recordContent,
+      recordTitle: input.recordTitle,
+      todaySolution: input.todaySolution || "",
+    };
+    try {
+      await createRecord("record", params);
+      nav("/recordlist", { replace: true });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const saveDisabled = () => {
     return (
       !input.recordContent ||
-      isNaN(input.recordDate.getTime()) ||
+      typeof input.recordedDate === "string" ||
+      isNaN(input.recordedDate.getTime()) ||
       !input.recordTitle
     );
   };
@@ -70,8 +73,12 @@ const RecordForm = () => {
       <h3>오늘의 생각을 기록해보세요.</h3>
       <div className="Record__area">
         <TextField
-          value={getStringedDate(input.recordDate)}
-          name="recordDate"
+          value={
+            typeof input.recordedDate === "string"
+              ? input.recordedDate
+              : getStringedDate(input.recordedDate)
+          }
+          name="recordedDate"
           className="custom-component"
           size="small"
           id="date"

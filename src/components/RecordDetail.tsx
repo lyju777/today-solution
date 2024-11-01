@@ -1,5 +1,4 @@
-import { useState, useContext, useEffect } from "react";
-import { RecordDispatchContext } from "../context/recordContext";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, CardContent, Typography } from "@mui/material";
 import CommentIcon from "@mui/icons-material/Comment";
@@ -7,40 +6,45 @@ import CreateIcon from "@mui/icons-material/Create";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { getStringedDate } from "../util/get-stringed-date";
 import { InitRecord } from "../types/types";
+import { getRecordDetail } from "../api/record";
 
 import "./styles/RecordDetail.scss";
 
 interface RecordEditFormProps {
-  initData: InitRecord;
+  recordId: string;
 }
 
-const RecordDetail: React.FC<RecordEditFormProps> = ({ initData }) => {
-  const context = useContext(RecordDispatchContext);
-
-  if (!context) {
-    throw new Error("'cannot find RecordDispatchContext");
-  }
-
+const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
   const [input, setInput] = useState<InitRecord>({
-    id: "",
+    recordId: "",
     recordTitle: "",
-    recordDate: new Date(),
+    recordedDate: new Date(),
     recordContent: "",
+    todaySolution: "",
   });
 
   useEffect(() => {
-    if (initData) {
-      setInput({
-        ...initData,
-        recordDate: new Date(initData.recordDate),
-      });
-    }
-  }, [initData]);
+    const fetchData = async () => {
+      try {
+        const response = await getRecordDetail("record", recordId);
+        if (response) {
+          setInput({
+            ...response.data,
+            recordedDate: new Date(response.data.recordedDate),
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [recordId]);
 
   const saveDisabled = () => {
     return (
       !input.recordContent ||
-      isNaN(input.recordDate.getTime()) ||
+      typeof input.recordedDate === "string" ||
+      isNaN(input.recordedDate.getTime()) ||
       !input.recordTitle
     );
   };
@@ -54,19 +58,19 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ initData }) => {
             <CommentIcon fontSize="small" /> {input.recordTitle}
           </Typography>
           <Typography sx={{ color: "text.secondary", mb: 2 }}>
-            {getStringedDate(input.recordDate)}
+            {getStringedDate(new Date(input.recordedDate))}
           </Typography>
           <Typography className="recordContent" variant="body1">
             {input.recordContent}
           </Typography>
           <br />
-          {initData?.todaySolution && (
+          {input.todaySolution && (
             <Typography
               className="recordContent"
               variant="body2"
               component="div"
             >
-              {`# 오늘의 솔루션 "${initData?.todaySolution}"`}
+              {`# 오늘의 솔루션 "${input.todaySolution}"`}
             </Typography>
           )}
 
@@ -83,7 +87,7 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ initData }) => {
             </Button>
             <Button
               className="custom-button"
-              onClick={() => nav(`/edit/${initData.id}`)}
+              onClick={() => nav(`/edit/${recordId}`)}
               variant="outlined"
               color="inherit"
               startIcon={<CreateIcon />}

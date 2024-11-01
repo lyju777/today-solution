@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import { UserProvider } from "./context/userContext";
 import { CustomThemeProvider } from "./context/ThemeContext";
-import { RecordProvider } from "./context/recordContext";
 
 import Home from "./pages/Home";
 import Solution from "./pages/Solution";
@@ -31,23 +30,21 @@ const App = () => {
       <CustomThemeProvider>
         <DialogsProvider>
           <UserProvider>
-            <RecordProvider>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/solution" element={<Solution />} />
-                <Route path="*" element={<NotFound />} />
-                <Route element={<LoggedInRoute />}>
-                  <Route path="/record" element={<Record />} />
-                  <Route path="/edit/:id" element={<Edit />} />
-                  <Route path="/recordlist" element={<RecordList />} />
-                  <Route path="/detail/:id" element={<Detail />} />
-                </Route>
-                <Route element={<NotLoggedInRoute />}>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/kakao/callback" element={<Redirection />} />
-                </Route>
-              </Routes>
-            </RecordProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/solution" element={<Solution />} />
+              <Route path="*" element={<NotFound />} />
+              <Route element={<LoggedInRoute />}>
+                <Route path="/record" element={<Record />} />
+                <Route path="/edit/:id" element={<Edit />} />
+                <Route path="/recordlist" element={<RecordList />} />
+                <Route path="/detail/:id" element={<Detail />} />
+              </Route>
+              <Route element={<NotLoggedInRoute />}>
+                <Route path="/login" element={<Login />} />
+                <Route path="/kakao/callback" element={<Redirection />} />
+              </Route>
+            </Routes>
           </UserProvider>
         </DialogsProvider>
       </CustomThemeProvider>
