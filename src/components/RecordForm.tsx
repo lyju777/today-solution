@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 import { Button, TextField } from "@mui/material";
 import { getStringedDate, formatNewDate } from "../util/get-stringed-date";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
@@ -17,6 +18,9 @@ const RecordForm = () => {
     recordContent: "",
     todaySolution: "",
   });
+
+  const userContext = useContext(UserContext);
+  const { token } = userContext;
 
   useEffect(() => {
     const getSolution = sessionStorage.getItem("randomSolutions");
@@ -52,7 +56,7 @@ const RecordForm = () => {
       todaySolution: input.todaySolution || "",
     };
     try {
-      await createRecord("record", params);
+      await createRecord("record", params, token);
       nav("/recordlist", { replace: true });
     } catch (error) {
       console.error(error);

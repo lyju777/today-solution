@@ -1,12 +1,13 @@
 import "./styles/Header.scss";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import DarkModeButton from "./DarkModeButton";
 import { isLoggedIn } from "../../util/loginCheck";
 import { getLogout } from "../../api/login";
-import Cookies from "js-cookie";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { useDialogs } from "@toolpad/core/useDialogs";
 import { ThemeContext } from "../../context/ThemeContext";
+import { UserContext } from "../../context/userContext";
 import {
   useCallback,
   useContext,
@@ -17,7 +18,6 @@ import {
 } from "react";
 import { throttle } from "lodash";
 import { Avatar, IconButton } from "@mui/material";
-import { UserContext } from "../../context/userContext";
 
 interface Props {
   isLoading?: boolean;
@@ -26,7 +26,7 @@ interface Props {
 const Header = ({ isLoading }: Props) => {
   const themeContext = useContext(ThemeContext);
   const userContext = useContext(UserContext);
-  const userData = userContext ? userContext.userData : null;
+  const { userData, token } = userContext;
   const nav = useNavigate();
 
   const dialogs = useDialogs();
@@ -64,7 +64,13 @@ const Header = ({ isLoading }: Props) => {
     nav(path);
   };
 
+  const handleLogin = () => {
+    if (isLoading) return;
+    nav("/login");
+  };
+
   const handleLogout = async () => {
+    if (isLoading) return;
     const confirmed = await dialogs.confirm("로그아웃 하시겠습니까?", {
       title: "로그아웃",
       okText: "확인",
@@ -72,8 +78,6 @@ const Header = ({ isLoading }: Props) => {
     });
 
     if (confirmed) {
-      const token = Cookies.get("access_token");
-      if (!token) return;
       getLogout("logout", token).then(() => {
         Cookies.remove("access_token");
         localStorage.removeItem("userData");
@@ -97,7 +101,7 @@ const Header = ({ isLoading }: Props) => {
             <Avatar
               onClick={handleLogout}
               alt="Remy Sharp"
-              src={userData?.thumbnailImage}
+              src={userData.thumbnailImage}
             />
             <IconButton onClick={() => handleNavigation("/recordlist")}>
               <FormatListBulletedIcon
@@ -106,7 +110,7 @@ const Header = ({ isLoading }: Props) => {
             </IconButton>
           </>
         ) : (
-          <div onClick={() => nav("/login")}>Login</div>
+          <div onClick={handleLogin}>Login</div>
         )}
         <DarkModeButton></DarkModeButton>
       </div>

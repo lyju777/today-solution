@@ -1,4 +1,5 @@
 import "../components/styles/Login.scss";
+import KakaoLogin from "../assets/kakao_login_large_wide.png";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
@@ -15,7 +16,8 @@ const Login = () => {
   return (
     <div className="Login">
       <h1>오늘의 솔루션</h1>
-      <input type="button" onClick={handleLogin} className="loginButton" />
+      <img src={KakaoLogin} onClick={handleLogin} className="loginButton" />
+
       <Button className="returnButton" onClick={() => nav("/")}>
         돌아가기
       </Button>

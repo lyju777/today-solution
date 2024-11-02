@@ -3,9 +3,10 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "../util/theme";
 import { ThemeContextType } from "../types/types";
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
-);
+export const ThemeContext = createContext<ThemeContextType>({
+  darkMode: false,
+  setDarkMode: () => {},
+});
 
 export const CustomThemeProvider = ({ children }: { children: ReactNode }) => {
   const [darkMode, setDarkMode] = useState(() => {

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getStringedDate } from "../util/get-stringed-date";
 import { getRecordList } from "../api/record";
 import { InitRecord } from "../types/types";
+import { UserContext } from "../context/userContext";
 import "./styles/RecordListItem.scss";
 
 import List from "@mui/material/List";
@@ -21,10 +22,13 @@ const RecordListItem = () => {
   const [sortOrder, setSortOrder] = useState("latest");
   const [data, setData] = useState([]);
 
+  const userContext = useContext(UserContext);
+  const { token } = userContext;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getRecordList("record/list");
+        const response = await getRecordList("record/list", token);
         setData(response.data.recordList);
       } catch (error) {
         console.error(error);
@@ -32,7 +36,7 @@ const RecordListItem = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   const sortedData = [...(data || [])].sort((a: InitRecord, b: InitRecord) => {
     if (sortOrder === "latest") {

@@ -1,12 +1,22 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { UserData } from "../types/types";
+import Cookies from "js-cookie";
 
 interface userContext {
   userData: UserData;
   setUserData: React.Dispatch<React.SetStateAction<UserData>>;
+  token: string;
 }
 
-export const UserContext = createContext<userContext | undefined>(undefined);
+export const UserContext = createContext<userContext>({
+  userData: {
+    nickName: "",
+    profileImage: "",
+    thumbnailImage: "",
+  },
+  setUserData: () => {},
+  token: "",
+});
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userData, setUserData] = useState<UserData>({
@@ -14,6 +24,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     profileImage: "",
     thumbnailImage: "",
   });
+
+  const token = Cookies.get("access_token") || "";
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -23,7 +35,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData, token }}>
       {children}
     </UserContext.Provider>
   );

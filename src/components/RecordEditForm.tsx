@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 import { Button, TextField } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
 import { useDialogs } from "@toolpad/core/useDialogs";
@@ -26,10 +27,13 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
     todaySolution: "",
   });
 
+  const userContext = useContext(UserContext);
+  const { token } = userContext;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getRecordDetail("record", recordId);
+        const response = await getRecordDetail("record", recordId, token);
         if (response) {
           setInput({
             ...response.data,
@@ -41,7 +45,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
       }
     };
     fetchData();
-  }, [recordId]);
+  }, [recordId, token]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.name;
@@ -73,7 +77,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
         params.recordedDate = formatNewDate(input.recordedDate);
         delete params.todaySolution;
 
-        await editRecord("record", params);
+        await editRecord("record", params, token);
         nav(`/detail/${recordId}`, { replace: true });
       }
     } catch (error) {
@@ -92,7 +96,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
         if (!recordId) {
           return;
         }
-        await deleteRecord("record", recordId);
+        await deleteRecord("record", recordId, token);
         nav("/recordlist", { replace: true });
       }
     } catch (error) {

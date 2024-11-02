@@ -1,13 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-
-const token = Cookies.get("access_token");
-
-const header = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-};
 
 /**
  * 기록하기
@@ -20,8 +11,12 @@ const header = {
     "todaySolution" : ""
 }
  */
-export function createRecord(url: string, params: object) {
-  return axios.post(`/api/${url}`, params, header);
+
+// 토큰을 컴포넌트에서 불러와서 매개변수로 전달해야함
+export function createRecord(url: string, params: object, token: string) {
+  return axios.post(`/api/${url}`, params, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 /**
@@ -29,8 +24,10 @@ export function createRecord(url: string, params: object) {
  * @param {string} url record
  * @param {string} id recordId
  */
-export function getRecordDetail(url: string, id: string) {
-  return axios.get(`/api/${url}?recordId=${id}`, header);
+export function getRecordDetail(url: string, id: string, token: string) {
+  return axios.get(`/api/${url}?recordId=${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 /**
@@ -44,16 +41,20 @@ export function getRecordDetail(url: string, id: string) {
     "recordId" : ""
 }
  */
-export function editRecord(url: string, params: object) {
-  return axios.patch(`/api/${url}`, params, header);
+export function editRecord(url: string, params: object, token: string) {
+  return axios.patch(`/api/${url}`, params, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 /**
  * 기록리스트 조회
  * @param {string} url record/list
  */
-export function getRecordList(url: string) {
-  return axios.get(`/api/${url}`, header);
+export function getRecordList(url: string, token: string) {
+  return axios.get(`/api/${url}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 /**
@@ -61,6 +62,8 @@ export function getRecordList(url: string) {
  * @param {string} url record
  * @param {string} url recordId
  */
-export function deleteRecord(url: string, id: string) {
-  return axios.delete(`/api/${url}?recordId=${id}`, header);
+export function deleteRecord(url: string, id: string, token: string) {
+  return axios.delete(`/api/${url}?recordId=${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }

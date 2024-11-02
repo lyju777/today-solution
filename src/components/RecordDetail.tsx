@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, CardContent, Typography } from "@mui/material";
+import { UserContext } from "../context/userContext";
 import CommentIcon from "@mui/icons-material/Comment";
 import CreateIcon from "@mui/icons-material/Create";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
@@ -23,10 +24,13 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
     todaySolution: "",
   });
 
+  const userContext = useContext(UserContext);
+  const { token } = userContext;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getRecordDetail("record", recordId);
+        const response = await getRecordDetail("record", recordId, token);
         if (response) {
           setInput({
             ...response.data,
@@ -38,7 +42,7 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
       }
     };
     fetchData();
-  }, [recordId]);
+  }, [recordId, token]);
 
   const saveDisabled = () => {
     return (
