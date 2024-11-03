@@ -16,6 +16,8 @@ interface RecordEditFormProps {
 }
 
 const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
+  const nav = useNavigate();
+
   const [input, setInput] = useState<InitRecord>({
     recordId: "",
     recordTitle: "",
@@ -38,11 +40,12 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
           });
         }
       } catch (error) {
+        nav("/", { replace: true });
         console.error(error);
       }
     };
     fetchData();
-  }, [recordId, token]);
+  }, [recordId, token, nav]);
 
   const saveDisabled = () => {
     return (
@@ -53,7 +56,6 @@ const RecordDetail: React.FC<RecordEditFormProps> = ({ recordId }) => {
     );
   };
 
-  const nav = useNavigate();
   return (
     <div className="RecordDetail">
       <div className="RecordDetail__area">

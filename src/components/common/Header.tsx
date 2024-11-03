@@ -38,7 +38,9 @@ const Header = ({ isLoading }: Props) => {
   const throttleScroll = useMemo(() => {
     return throttle(() => {
       const currentScrollY = window.scrollY;
-      console.log(`scroll position: ${positionRef.current}`);
+      if (currentScrollY <= 0) {
+        return;
+      }
       if (currentScrollY > positionRef.current) {
         setVisible(false);
       } else {

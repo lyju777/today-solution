@@ -18,6 +18,7 @@ interface RecordEditFormProps {
 
 const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
   const dialogs = useDialogs();
+  const nav = useNavigate();
 
   const [input, setInput] = useState<InitRecord>({
     recordId: "",
@@ -34,6 +35,7 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
     const fetchData = async () => {
       try {
         const response = await getRecordDetail("record", recordId, token);
+
         if (response) {
           setInput({
             ...response.data,
@@ -41,11 +43,12 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
           });
         }
       } catch (error) {
+        nav("/", { replace: true });
         console.error(error);
       }
     };
     fetchData();
-  }, [recordId, token]);
+  }, [recordId, token, nav]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const name: string = e.target.name;
@@ -113,7 +116,6 @@ const RecordEditForm: React.FC<RecordEditFormProps> = ({ recordId }) => {
     );
   };
 
-  const nav = useNavigate();
   return (
     <div className="Record">
       <h3>오늘의 생각을 기록해보세요.</h3>

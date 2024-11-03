@@ -15,12 +15,14 @@ import NotesIcon from "@mui/icons-material/Notes";
 import Typography from "@mui/material/Typography";
 import { InputAdornment, MenuItem, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import Skeleton from "@mui/material/Skeleton";
 
 const RecordListItem = () => {
   const nav = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("latest");
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const userContext = useContext(UserContext);
   const { token } = userContext;
@@ -33,6 +35,7 @@ const RecordListItem = () => {
       } catch (error) {
         console.error(error);
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -53,7 +56,11 @@ const RecordListItem = () => {
   const filteredData = sortedData.filter(
     (item: InitRecord) =>
       item.recordContent.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.recordTitle.toLowerCase().includes(searchTerm.toLowerCase())
+      item.recordTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.recordedDate
+        .toString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   const onChangeSortOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,40 +114,55 @@ const RecordListItem = () => {
           bgcolor: "background.paper",
         }}
       >
-        {filteredData?.map((item: InitRecord) => (
-          <div key={item.recordId}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <NotesIcon />
-              </ListItemAvatar>
-              <ListItemText
-                className="RecordListItem__container__ListItemText"
-                primary={item.recordTitle}
-                onClick={() => nav(`/detail/${item.recordId}`)}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      sx={{ color: "text.primary", display: "inline" }}
-                    >
-                      {getStringedDate(new Date(item.recordedDate))}
-                    </Typography>
-                    <Typography
-                      className="recordContent"
-                      component="span"
-                      variant="body2"
-                      sx={{ display: "block" }}
-                    >
-                      {item.recordContent}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </div>
-        ))}
+        {loading
+          ? Array.from(new Array(filteredData.length)).map((_, index) => (
+              <div key={index}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Skeleton variant="circular" width={40} height={40} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={<Skeleton variant="text" width="30%" />}
+                    secondary={<Skeleton variant="text" width="50%" />}
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </div>
+            ))
+          : filteredData?.map((item: InitRecord) => (
+              <div key={item.recordId}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <NotesIcon />
+                  </ListItemAvatar>
+                  <ListItemText
+                    className="RecordListItem__container__ListItemText"
+                    primary={item.recordTitle}
+                    onClick={() => nav(`/detail/${item.recordId}`)}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "text.primary", display: "inline" }}
+                        >
+                          {getStringedDate(new Date(item.recordedDate))}
+                        </Typography>
+                        <Typography
+                          className="recordContent"
+                          component="span"
+                          variant="body2"
+                          sx={{ display: "block" }}
+                        >
+                          {item.recordContent}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </div>
+            ))}
       </List>
     </div>
   );
