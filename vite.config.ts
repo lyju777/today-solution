@@ -16,8 +16,7 @@ export default ({ mode }: { mode: string }) => {
       },
     },
     server: {
-      host: "192.168.0.78", // 네트워크 IP 주소
-      port: 5173, // 사용할 포트 번호
+      host: "0.0.0.0", // 네트워크 IP 주소
       open: true, // 서버 시작 시 브라우저 열기
       proxy: {
         "/api": {
