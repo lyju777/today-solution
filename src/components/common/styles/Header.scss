@@ -1,4 +1,4 @@
-@import "../../../assets/styles/font.scss";
+@use "../../../assets/styles/font";
 
 .Header {
   position: fixed;
@@ -50,7 +50,7 @@
     padding: 35px 30px;
 
     &__title {
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
 
     &__menu {
@@ -65,7 +65,7 @@
     padding: 35px 0 0;
 
     &__title {
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
 
     &__menu {

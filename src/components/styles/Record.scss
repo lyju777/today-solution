@@ -1,4 +1,4 @@
-@import "../../assets/styles/font.scss";
+@use "../../assets/styles/font";
 
 .Record {
   display: flex;
@@ -11,7 +11,7 @@
   h3,
   h4 {
     font-family: "Nanum Myeongjo", serif;
-    font-size: $font-size-100;
+    font-size: font.$font-size-100;
   }
 
   &__area {
@@ -37,7 +37,7 @@
   .Record {
     h3,
     h4 {
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
 
     &__area {
@@ -57,7 +57,7 @@
   .Record {
     h3,
     h4 {
-      font-size: $font-size-300;
+      font-size: font.$font-size-300;
     }
 
     &__area {

@@ -1,4 +1,4 @@
-@import "../../assets/styles/font.scss";
+@use "../../assets/styles/font";
 
 .SolutionItem {
   display: flex;
@@ -12,7 +12,7 @@
   h3 {
     font-family: "Nanum Myeongjo", serif;
     padding: 0px 20px;
-    font-size: $font-size-100;
+    font-size: font.$font-size-100;
     margin: 0 0 30px 0;
     opacity: 0;
     animation: fadeIn 2s forwards;
@@ -36,7 +36,7 @@
 @media all and (min-width: 768px) and (max-width: 1024px) {
   .SolutionItem {
     h3 {
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
   }
 }
@@ -44,7 +44,7 @@
 @media all and (max-width: 767px) {
   .SolutionItem {
     h3 {
-      font-size: $font-size-300;
+      font-size: font.$font-size-300;
     }
   }
 }

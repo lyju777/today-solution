@@ -1,4 +1,4 @@
-@import "../../assets/styles/font.scss";
+@use "../../assets/styles/font";
 
 .CardList {
   display: flex;
@@ -28,7 +28,7 @@
     font-family: "Nanum Myeongjo", serif;
     text-align: center;
     margin-top: 60px;
-    font-size: $font-size-100;
+    font-size: font.$font-size-100;
   }
 }
 
@@ -55,7 +55,7 @@
     width: 3%;
   }
   p {
-    font-size: $font-size-100;
+    font-size: font.$font-size-100;
     font-weight: 600;
     font-family: "Nanum Myeongjo", serif;
   }
@@ -73,7 +73,7 @@
 
     h4 {
       margin-top: 70px;
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
   }
 
@@ -82,7 +82,7 @@
       width: 4.5%;
     }
     p {
-      font-size: $font-size-200;
+      font-size: font.$font-size-200;
     }
   }
 }
@@ -99,7 +99,7 @@
 
     h4 {
       margin: 50px 10px 0 10px;
-      font-size: $font-size-400;
+      font-size: font.$font-size-400;
     }
   }
 
@@ -108,7 +108,7 @@
       width: 9%;
     }
     p {
-      font-size: $font-size-300;
+      font-size: font.$font-size-300;
     }
   }
 }
