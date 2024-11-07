@@ -1,4 +1,4 @@
-import axios from "axios";
+import requestAxios from "./index";
 
 /**
  * 기록하기
@@ -14,7 +14,7 @@ import axios from "axios";
 
 // 토큰을 컴포넌트에서 불러와서 매개변수로 전달해야함
 export function createRecord(url: string, params: object, token: string) {
-  return axios.post(`/api/${url}`, params, {
+  return requestAxios.post(`/${url}`, params, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -25,7 +25,7 @@ export function createRecord(url: string, params: object, token: string) {
  * @param {string} id recordId
  */
 export function getRecordDetail(url: string, id: string, token: string) {
-  return axios.get(`/api/${url}?recordId=${id}`, {
+  return requestAxios.get(`/${url}?recordId=${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -42,7 +42,7 @@ export function getRecordDetail(url: string, id: string, token: string) {
 }
  */
 export function editRecord(url: string, params: object, token: string) {
-  return axios.patch(`/api/${url}`, params, {
+  return requestAxios.patch(`/${url}`, params, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -52,7 +52,7 @@ export function editRecord(url: string, params: object, token: string) {
  * @param {string} url record/list
  */
 export function getRecordList(url: string, token: string) {
-  return axios.get(`/api/${url}`, {
+  return requestAxios.get(`/${url}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
@@ -63,7 +63,7 @@ export function getRecordList(url: string, token: string) {
  * @param {string} url recordId
  */
 export function deleteRecord(url: string, id: string, token: string) {
-  return axios.delete(`/api/${url}?recordId=${id}`, {
+  return requestAxios.delete(`/${url}?recordId=${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
