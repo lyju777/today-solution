@@ -6,7 +6,6 @@ import DarkModeButton from "./DarkModeButton";
 import { isLoggedIn } from "../../util/loginCheck";
 import { getLogout } from "../../api/login";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import Skeleton from "@mui/material/Skeleton";
 import { useDialogs } from "@toolpad/core/useDialogs";
 import { ThemeContext } from "../../context/ThemeContext";
 import { UserContext } from "../../context/userContext";
@@ -35,8 +34,6 @@ const Header = ({ isLoading }: Props) => {
   const dialogs = useDialogs();
 
   const [visible, setVisible] = useState(true);
-  const [loading, setLoading] = useState(true);
-
   const positionRef = useRef(window.scrollY);
 
   const throttleScroll = useMemo(() => {
@@ -59,15 +56,6 @@ const Header = ({ isLoading }: Props) => {
   }, [throttleScroll]);
 
   useEffect(() => {
-    if (isLoggedIn()) {
-      setLoading(true);
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -112,31 +100,18 @@ const Header = ({ isLoading }: Props) => {
       </div>
       <div className="Header__title Header__menu">
         {isLoggedIn() ? (
-          !userData && loading ? (
-            <>
-              <Avatar onClick={handleLogout} alt="Remy Sharp">
-                <Skeleton variant="circular" width={40} height={40} />
-              </Avatar>
-              <IconButton onClick={() => handleNavigation("/recordlist")}>
-                <FormatListBulletedIcon
-                  sx={{ fontSize: 33 }}
-                ></FormatListBulletedIcon>
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <Avatar
-                onClick={handleLogout}
-                alt="Remy Sharp"
-                src={userData.thumbnailImage}
-              />
-              <IconButton onClick={() => handleNavigation("/recordlist")}>
-                <FormatListBulletedIcon
-                  sx={{ fontSize: 33 }}
-                ></FormatListBulletedIcon>
-              </IconButton>
-            </>
-          )
+          <>
+            <Avatar
+              onClick={handleLogout}
+              alt="Remy Sharp"
+              src={userData.thumbnailImage}
+            />
+            <IconButton onClick={() => handleNavigation("/recordlist")}>
+              <FormatListBulletedIcon
+                sx={{ fontSize: 33 }}
+              ></FormatListBulletedIcon>
+            </IconButton>
+          </>
         ) : (
           <div onClick={handleLogin}>Login</div>
         )}
