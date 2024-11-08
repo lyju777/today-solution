@@ -1,3 +1,4 @@
+import React from "react";
 import "./styles/Header.scss";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -5,9 +6,11 @@ import DarkModeButton from "./DarkModeButton";
 import { isLoggedIn } from "../../util/loginCheck";
 import { getLogout } from "../../api/login";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import Skeleton from "@mui/material/Skeleton";
 import { useDialogs } from "@toolpad/core/useDialogs";
 import { ThemeContext } from "../../context/ThemeContext";
 import { UserContext } from "../../context/userContext";
+
 import {
   useCallback,
   useContext,
@@ -32,6 +35,7 @@ const Header = ({ isLoading }: Props) => {
   const dialogs = useDialogs();
 
   const [visible, setVisible] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const positionRef = useRef(window.scrollY);
 
@@ -55,6 +59,15 @@ const Header = ({ isLoading }: Props) => {
   }, [throttleScroll]);
 
   useEffect(() => {
+    if (isLoggedIn()) {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -99,18 +112,31 @@ const Header = ({ isLoading }: Props) => {
       </div>
       <div className="Header__title Header__menu">
         {isLoggedIn() ? (
-          <>
-            <Avatar
-              onClick={handleLogout}
-              alt="Remy Sharp"
-              src={userData.thumbnailImage}
-            />
-            <IconButton onClick={() => handleNavigation("/recordlist")}>
-              <FormatListBulletedIcon
-                sx={{ fontSize: 33 }}
-              ></FormatListBulletedIcon>
-            </IconButton>
-          </>
+          !userData && loading ? (
+            <>
+              <Avatar onClick={handleLogout} alt="Remy Sharp">
+                <Skeleton variant="circular" width={40} height={40} />
+              </Avatar>
+              <IconButton onClick={() => handleNavigation("/recordlist")}>
+                <FormatListBulletedIcon
+                  sx={{ fontSize: 33 }}
+                ></FormatListBulletedIcon>
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <Avatar
+                onClick={handleLogout}
+                alt="Remy Sharp"
+                src={userData.thumbnailImage}
+              />
+              <IconButton onClick={() => handleNavigation("/recordlist")}>
+                <FormatListBulletedIcon
+                  sx={{ fontSize: 33 }}
+                ></FormatListBulletedIcon>
+              </IconButton>
+            </>
+          )
         ) : (
           <div onClick={handleLogin}>Login</div>
         )}
@@ -120,4 +146,4 @@ const Header = ({ isLoading }: Props) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);
