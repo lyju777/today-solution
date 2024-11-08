@@ -36,9 +36,7 @@ const RecordListItem = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+        setLoading(false);
       }
     };
 
@@ -127,7 +125,25 @@ const RecordListItem = () => {
                   </ListItemAvatar>
                   <ListItemText
                     primary={<Skeleton variant="text" width="30%" />}
-                    secondary={<Skeleton variant="text" width="50%" />}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          sx={{ color: "text.primary", display: "inline" }}
+                        >
+                          <Skeleton variant="text" width="15%" />
+                        </Typography>
+                        <Typography
+                          className="recordContent"
+                          component="span"
+                          variant="body2"
+                          sx={{ display: "block" }}
+                        >
+                          <Skeleton variant="text" width="60%" />
+                        </Typography>
+                      </React.Fragment>
+                    }
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
