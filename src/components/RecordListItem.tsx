@@ -29,13 +29,17 @@ const RecordListItem = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await getRecordList("record/list", token);
         setData(response.data.recordList);
       } catch (error) {
         console.error(error);
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       }
-      setLoading(false);
     };
 
     fetchData();
