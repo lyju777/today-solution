@@ -16,6 +16,8 @@ export const UserContext = createContext<userContext>({
   },
   setUserData: () => {},
   token: "",
+  loading: true,
+  setLoading: () => {},
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -24,6 +26,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     profileImage: "",
     thumbnailImage: "",
   });
+
+  const [loading, setLoading] = useState(true);
 
   const token = Cookies.get("access_token") || "";
 
@@ -35,7 +39,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userData, setUserData, token }}>
+    <UserContext.Provider
+      value={{ userData, setUserData, token, loading, setLoading }}
+    >
       {children}
     </UserContext.Provider>
   );

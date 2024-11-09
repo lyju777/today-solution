@@ -20,8 +20,9 @@ const Redirection = () => {
           JSON.stringify(response.data.userWrapper)
         );
         if (userContext) {
-          const { setUserData } = userContext;
+          const { setUserData, setLoading } = userContext;
           setUserData(response.data.userWrapper);
+          setLoading(false);
         }
       } catch (error) {
         console.error(error);

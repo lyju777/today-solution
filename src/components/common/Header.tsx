@@ -6,6 +6,7 @@ import DarkModeButton from "./DarkModeButton";
 import { isLoggedIn } from "../../util/loginCheck";
 import { getLogout } from "../../api/login";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import { Skeleton } from "@mui/material";
 import { useDialogs } from "@toolpad/core/useDialogs";
 import { ThemeContext } from "../../context/ThemeContext";
 import { UserContext } from "../../context/userContext";
@@ -28,7 +29,7 @@ interface Props {
 const Header = ({ isLoading }: Props) => {
   const themeContext = useContext(ThemeContext);
   const userContext = useContext(UserContext);
-  const { userData, token } = userContext;
+  const { userData, token, loading } = userContext;
   const nav = useNavigate();
 
   const dialogs = useDialogs();
@@ -60,7 +61,7 @@ const Header = ({ isLoading }: Props) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, [handleScroll, userData]);
 
   const handleNavigation = (path: string) => {
     if (isLoading) return;
@@ -99,7 +100,12 @@ const Header = ({ isLoading }: Props) => {
         오늘의 솔루션
       </div>
       <div className="Header__title Header__menu">
-        {isLoggedIn() ? (
+        {loading ? (
+          <>
+            <Skeleton variant="circular" width={40} height={40} />
+            <Skeleton variant="circular" width={40} height={40} />
+          </>
+        ) : isLoggedIn() ? (
           <>
             <Avatar
               onClick={handleLogout}
@@ -107,9 +113,7 @@ const Header = ({ isLoading }: Props) => {
               src={userData.thumbnailImage}
             />
             <IconButton onClick={() => handleNavigation("/recordlist")}>
-              <FormatListBulletedIcon
-                sx={{ fontSize: 33 }}
-              ></FormatListBulletedIcon>
+              <FormatListBulletedIcon sx={{ fontSize: 33 }} />
             </IconButton>
           </>
         ) : (
