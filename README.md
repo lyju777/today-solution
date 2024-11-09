@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# 오늘의 솔루션
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 🔗사이트로 이동
 
-Currently, two official plugins are available:
+➡️ https://web-today-solution-m2zjn84xd00fa3a3.sel4.cloudtype.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br>
 
-## Expanding the ESLint configuration
+### 🛠️ 구현 기술
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+✅ Vite를 통한 개발환경 구성과 TypeScript를 통한 타입선언
 
-- Configure the top-level `parserOptions` property like this:
+✅ React Router ver6 기반 컴포넌트 UI 구축 및 데이터 상태관리
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+✅ 데이터 통신을 위한 Axios 연동과 Spring Boot 기반 RESTful API 서버 구축
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+✅ Spring Security와 Redis를 통한 사용자 인증처리 및 JWT 유효성 관리
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+<br>
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+![1.project](./src/assets/project_img/1.project.png)
+![2.project](./src/assets/project_img/2.project.png)
+![3.project](./src/assets/project_img/3.project.png)
+![4.project](./src/assets/project_img/4.project.png)
+![5.project](./src/assets/project_img/5.project.png)
+![6.project](./src/assets/project_img/6.project.png)
