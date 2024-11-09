@@ -10,17 +10,19 @@ const Redirection = () => {
 
   useEffect(() => {
     async function loginProcessing() {
+      const { setUserData, setLoading } = userContext;
       try {
         const code = new URL(window.location.href).searchParams.get("code");
         if (!code) return;
+        setLoading(true);
         const response = await getLoginToken("login", code);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
         Cookies.set("access_token", response.data.accessToken);
         localStorage.setItem(
           "userData",
           JSON.stringify(response.data.userWrapper)
         );
         if (userContext) {
-          const { setUserData, setLoading } = userContext;
           setUserData(response.data.userWrapper);
           setLoading(false);
         }

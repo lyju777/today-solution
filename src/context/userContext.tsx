@@ -18,7 +18,7 @@ export const UserContext = createContext<userContext>({
   },
   setUserData: () => {},
   token: "",
-  loading: true,
+  loading: false,
   setLoading: () => {},
 });
 
@@ -29,7 +29,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     thumbnailImage: "",
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const token = Cookies.get("access_token") || "";
 

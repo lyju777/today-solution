@@ -29,7 +29,7 @@ interface Props {
 const Header = ({ isLoading }: Props) => {
   const themeContext = useContext(ThemeContext);
   const userContext = useContext(UserContext);
-  const { userData, token, loading } = userContext;
+  const { userData, token, loading, setLoading } = userContext;
   const nav = useNavigate();
 
   const dialogs = useDialogs();
@@ -57,11 +57,15 @@ const Header = ({ isLoading }: Props) => {
   }, [throttleScroll]);
 
   useEffect(() => {
+    if (token) {
+      setLoading(false);
+    }
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll, userData]);
+  }, [handleScroll, userData, setLoading, token]);
 
   const handleNavigation = (path: string) => {
     if (isLoading) return;
@@ -103,7 +107,12 @@ const Header = ({ isLoading }: Props) => {
         {loading ? (
           <>
             <Skeleton variant="circular" width={40} height={40} />
-            <Skeleton variant="circular" width={40} height={40} />
+            <IconButton>
+              <Skeleton variant="circular" width={33} height={33} />
+            </IconButton>
+
+            {/* <Skeleton variant="circular" width={40} height={40} />
+            <Skeleton variant="circular" width={40} height={40} /> */}
           </>
         ) : isLoggedIn() ? (
           <>
@@ -125,4 +134,4 @@ const Header = ({ isLoading }: Props) => {
   );
 };
 
-export default React.memo(Header);
+export default Header;
