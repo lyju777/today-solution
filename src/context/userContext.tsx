@@ -6,6 +6,8 @@ interface userContext {
   userData: UserData;
   setUserData: React.Dispatch<React.SetStateAction<UserData>>;
   token: string;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const UserContext = createContext<userContext>({
