@@ -35,12 +35,14 @@
     font-weight: 500;
     font-style: normal;
     font-size: 1.5rem;
+    max-height: 40px;
     cursor: pointer;
   }
 
   &__menu {
     display: flex;
     align-items: center;
+    max-height: 40px;
     gap: 60px;
   }
 }

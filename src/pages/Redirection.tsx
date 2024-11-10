@@ -16,7 +16,6 @@ const Redirection = () => {
         if (!code) return;
         setLoading(true);
         const response = await getLoginToken("login", code);
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
         Cookies.set("access_token", response.data.accessToken);
         localStorage.setItem(
           "userData",

@@ -109,9 +109,6 @@ const Header = ({ isLoading }: Props) => {
             <IconButton>
               <Skeleton variant="circular" width={33} height={33} />
             </IconButton>
-
-            {/* <Skeleton variant="circular" width={40} height={40} />
-            <Skeleton variant="circular" width={40} height={40} /> */}
           </>
         ) : isLoggedIn() ? (
           <>
@@ -119,6 +116,7 @@ const Header = ({ isLoading }: Props) => {
               onClick={handleLogout}
               alt="Remy Sharp"
               src={userData.thumbnailImage}
+              sx={{ width: 40, height: 40 }}
             />
             <IconButton onClick={() => handleNavigation("/recordlist")}>
               <FormatListBulletedIcon sx={{ fontSize: 33 }} />
