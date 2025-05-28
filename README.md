@@ -1,7 +1,8 @@
 # 오늘의 솔루션
 
 #### 🔗Site Link
-➡️ https://web-today-solution-m2zjn84xd00fa3a3.sel4.cloudtype.app/
+
+➡️ https://d20ipik5l8ofiz.cloudfront.net
 
 <br>
 
@@ -19,9 +20,9 @@ FrontEnd(1명) | BackEnd(1명)
 
 **🛠️기술 스택**
 
-**Client :  `TypeScript`  `React`  `scss`  `axios`  `Material UI`  `KakaoLogin API`**
+**Client : `TypeScript` `React` `scss` `axios` `Material UI` `KakaoLogin API`**
 
-**Server : `Java`  `JPA`  `Spring Boot`  `MariaDB`  `redis`**
+**Server : `Java` `JPA` `Spring Boot` `MariaDB` `redis`**
 
 <br>
 
@@ -57,6 +58,7 @@ VITE_REDIRECT_URL
 ```
 
 ### Requirements
+
 ```sh
 node 16+ ~ or v18.20.1
 typescript v5.6.3
