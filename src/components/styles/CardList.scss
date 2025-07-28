@@ -11,10 +11,13 @@
   &__image {
     display: flex;
     justify-content: center;
-    gap: 100px;
+    gap: 70px;
 
     img {
-      width: 15%;
+      width: 100%;
+      max-width: 230px;
+      height: auto;
+      object-fit: contain;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
       cursor: pointer;
       transition: transform 0.3s ease-in-out;
@@ -64,10 +67,10 @@
 @media all and (min-width: 768px) and (max-width: 1024px) {
   .CardList {
     &__image {
-      gap: 90px;
+      gap: 50px;
 
       img {
-        width: 14%;
+        max-width: 150px;
       }
     }
 
@@ -90,10 +93,10 @@
 @media all and (max-width: 767px) {
   .CardList {
     &__image {
-      gap: 25px;
+      gap: 20px;
 
       img {
-        width: 26%;
+        max-width: 95px;
       }
     }
 
